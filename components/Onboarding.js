@@ -3,6 +3,7 @@ import { StyleSheet, View, FlatList, Animated } from 'react-native';
 
 import OnboardingItem from './OnboardingItem';
 import Paginator from './Paginator';
+import NextButton from './NextButton';
 import  slides from '../slids';
 
 export default Onboarding = () => {
@@ -15,6 +16,14 @@ export default Onboarding = () => {
   }).current;
 
   const viewConfig = useRef({ viewAreaCoveragePercentThreshold: 50 }).current;
+
+  const scrollTo = () => {
+    if (currentIndex < slides.length - 1) {
+      slideRef.current.scrollToIndex({ index: currentIndex + 1 })
+    } else {
+      console.log('Last Item.');
+    };
+  };
 
  return ( 
  <View style={styles.container}>
@@ -41,6 +50,10 @@ export default Onboarding = () => {
      data={slides}
      scrollX={scrollX}
    />
+   <NextButton
+     scrollTo={scrollTo}
+     percentage={(currentIndex +1) * (100 / slides.length)}
+    />
   </View> 
   );
 }
