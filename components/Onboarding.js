@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { StyleSheet, View, FlatList, Animated } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import OnboardingItem from './OnboardingItem';
 import Paginator from './Paginator';
@@ -17,11 +18,15 @@ export default Onboarding = () => {
 
   const viewConfig = useRef({ viewAreaCoveragePercentThreshold: 50 }).current;
 
-  const scrollTo = () => {
+  const scrollTo = async () => {
     if (currentIndex < slides.length - 1) {
       slideRef.current.scrollToIndex({ index: currentIndex + 1 })
     } else {
-      console.log('Last Item.');
+      try {
+        await AsyncStorage.setItem('@viewedOnboarding', 'true');
+      } catch (err) {
+        console.log('Error @setItem: ', err);
+      }
     };
   };
 
